@@ -1,0 +1,472 @@
+[
+  {
+    "id": "case_001_fail",
+    "type": "fail_rule1_entity_mismatch",
+    "reference": "Rath Melsigi the monastery in Ireland during the 7th century where Saint Egelbert, an Anglo Saxon was educated. Among those known to have studied there were Willibrord... who organised the mission to Frisia. Willibrord... was a Northumbrian missionary saint...",
+    "question": "What Northumbrian missionary saint studied at Rath Melsigi?",
+    "answer": "Saint Egelbert was educated at Rath Melsigi.",
+    "embedding_text": "Question: What Northumbrian missionary saint studied at Rath Melsigi? Answer: Saint Egelbert was educated at Rath Melsigi.",
+    "label": "FAIL",
+    "reason": "FAIL (Violation of fundamental rule one: Misattribution of entities). The question specifically asked for a 'Northumbrian' saint. The reference material clearly states that Willibrord was Northumbrian, while Saint Egelbert was Anglo-Saxon. The answer incorrectly attributed the Northumbrian characteristic to Egelbert."
+  },
+  {
+    "id": "case_001_pass",
+    "type": "pass_fact_match",
+    "reference": "Rath Melsigi the monastery in Ireland during the 7th century where Saint Egelbert, an Anglo Saxon was educated. Among those known to have studied there were Willibrord... who organised the mission to Frisia. Willibrord... was a Northumbrian missionary saint...",
+    "question": "What Northumbrian missionary saint studied at Rath Melsigi?",
+    "answer": "Willibrord",
+    "embedding_text": "Question: What Northumbrian missionary saint studied at Rath Melsigi? Answer: Willibrord",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer correctly extracted Willibrord, the entity from the original text that met the condition of being a 'Northumbrian missionary saint'."
+  },
+  {
+    "id": "case_002_fail",
+    "type": "fail_rule1_over_generalization",
+    "reference": "One Big Hapa Family is a 2010 animated/live-action documentary film directed by Canadian director Jeff Chiba Stearns. Saigon, U.S.A. is a 2004 documentary film about Vietnamese Americans that live in the United States.",
+    "question": "One Big Hapa Family and Saigon, U.S.A. are both what?",
+    "answer": "One Big Hapa Family and Saigon, U.S.A. both explore Asian-American culture.",
+    "embedding_text": "Question: One Big Hapa Family and Saigon, U.S.A. are both what? Answer: One Big Hapa Family and Saigon, U.S.A. both explore Asian-American culture.",
+    "label": "FAIL",
+    "reason": "FAIL (Violation of Rule 1/3: Overgeneralization). The original text only mentions "Vietnamese Americans" (Saigon U.S.A.) and the director's name, "Jeff Chiba Stearns." Although they fall under the category of Asian Americans in external knowledge, the superordinate concept of "Asian-American" is not explicitly mentioned in the original text. In strict factual arbitration, generalizing this to "Asian-American culture" constitutes overgeneralization by introducing external common knowledge."
+  },
+  {
+    "id": "case_008_fail",
+    "type": "fail_rule1_fabrication",
+    "reference": "James (Joseph) Hanley... was a British novelist... He is known for his crime novels about the Mafia, most notably \"The Godfather\" (1969)...",
+    "question": "What kind of works were written by James Hanley and Mario Puzo?",
+    "answer": "James Hanley and Mario Puzo wrote captivating crime novels.",
+    "embedding_text": "Question: What kind of works were written by James Hanley and Mario Puzo? Answer: James Hanley and Mario Puzo wrote captivating crime novels.",
+    "label": "FAIL",
+    "reason": "FAIL (Violation of fundamental rule one: Inventing information). The entire source material does not mention 'Mario Puzo'. The answer not only introduced an entity that did not exist in the original text, but also fabricated a shared attribute between the two individuals, which is a typical example of fabricating facts."
+  },
+  {
+    "id": "case_009_fail",
+    "type": "fail_rule1_fabrication",
+    "reference": "Thurn and Taxis is a board game... Cluedo... is a murder mystery game for three to six players...",
+    "question": "Thurn and Taxis and Cluedo, are which form of entertainment?",
+    "answer": "Thurn and Taxis and Cluedo are two different types of board games.",
+    "embedding_text": "Question: Thurn and Taxis and Cluedo, are which form of entertainment? Answer: Thurn and Taxis and Cluedo are two different types of board games.",
+    "label": "FAIL",
+    "reason": "FAIL (Violation of Rule 1: Inconsistent details). The original text explicitly defines Thurn and Taxis as a 'board game' but defines Cluedo as a 'murder mystery game'. Although Cluedo is a board game in reality, the original text does not provide this classification information. The model's forced classification of both as 'board games' constitutes a classification bias due to the introduction of external knowledge."
+  },
+  {
+    "id": "case_011_fail",
+    "type": "fail_rule1_fabrication",
+    "reference": "La Valentina is a Mexican musical drama film... starring... Esperanza Baur... was the second wife of John Wayne.",
+    "question": "La Valentina starred the actress who was the second wife of which actor?",
+    "answer": "La Valentina starred the actress who was the second wife of a Hollywood legend.",
+    "embedding_text": "Question: La Valentina starred the actress who was the second wife of which actor? Answer: La Valentina starred the actress who was the second wife of a Hollywood legend.",
+    "label": "FAIL",
+    "reason": "FAIL (Violation of Rule 1: Fabrication of modifiers). The original text only mentioned the entity name 'John Wayne'. The answer replaced it with 'Hollywood legend'. Although this is a generally accepted fact, in strict RAG hallucination detection, evaluative/honorific titles not mentioned in the original text are considered 'Unverifiable' and therefore judged as FAIL."
+  },
+  {
+    "id": "case_011_pass",
+    "type": "pass_fact_match",
+    "reference": "La Valentina is a Mexican musical drama film... starring... Esperanza Baur... was the second wife of John Wayne.",
+    "question": "La Valentina starred the actress who was the second wife of which actor?",
+    "answer": "John Wayne",
+    "embedding_text": "Question: La Valentina starred the actress who was the second wife of which actor? Answer: John Wayne",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer directly extracted the entity name 'John Wayne' explicitly mentioned in the original text."
+  },
+  {
+    "id": "case_014_fail",
+    "type": "fail_rule1_fabrication",
+    "reference": "Legendary Entertainment (also known as Legendary Pictures...) is an American media company based in Burbank, California.",
+    "question": "Kong: Skull Island... serves as the second film, in which American media company...?",
+    "answer": "Legendary Entertainment, a reputable California-based media company.",
+    "embedding_text": "Question: Kong: Skull Island... serves as the second film, in which American media company...? Answer: Legendary Entertainment, a reputable California-based media company.",
+    "label": "FAIL",
+    "reason": "FAIL (Violation of Rule 1: Subjective addition). The answer added the adjective 'reputable'. The source material only described its geographical location (Burbank, California) and did not provide any evaluation of its reputation. Adding such subjective modifiers is strictly prohibited."
+  },
+  {
+    "id": "case_015_pass",
+    "type": "pass_valid_inference",
+    "reference": "Celabraison is the debut album by American rock band Sleeper Agent. The album was produced by Jay Joyce...",
+    "question": "Produced by Jay Joyce, Celabraison is the debut album for which band?",
+    "answer": "Celabraison is the debut album produced by John Joseph \"Jay\" Joyce for Sleeper Agent.",
+    "embedding_text": "Question: Produced by Jay Joyce, Celabraison is the debut album for which band? Answer: Celabraison is the debut album produced by John Joseph \"Jay\" Joyce for Sleeper Agent.",
+    "label": "PASS",
+    "reason": "PASS (Logical deduction/Sentence restructuring). Although the answer is longer than the original text, it integrates the full name 'John Joseph "Jay" Joyce' (from the latter part of the original text) and 'Sleeper Agent' (from the first part), but all information points are verifiable in the original text, and the logical relationship is correct. This is cross-sentence information integration, not hallucination."
+  },
+  {
+    "id": "case_019_fail",
+    "type": "fail_rule1_fabrication",
+    "reference": "Typhoon Cobra... named after Admiral William 'Bull' Halsey... William Frederick Halsey Jr... was an American admiral...",
+    "question": "Who was the Fleet Admiral of the Unites States Navy that Typhoon of 1944 was named after?",
+    "answer": "The Typhoon of 1944 was named after a famous American admiral.",
+    "embedding_text": "Question: Who was the Fleet Admiral... named after? Answer: The Typhoon of 1944 was named after a famous American admiral.",
+    "label": "FAIL",
+    "reason": "FAIL (Violation of fundamental rule one: Information omission and fabrication). The question asks for a specific name (Who). The answer not only fails to provide the name (William Frederick Halsey Jr.) but instead uses a general description 'famous American admiral'. The original text does not mention the attribute 'famous', and the answer does not meet the specific information query requirement."
+  },
+  {
+    "id": "halueval_001_pass",
+    "type": "pass_fact_match",
+    "reference": " He made a name for himself in the 1960s as the featured solo trumpet player for the Bert Kaempfert orchestra... Berthold Heinrich Kämpfert... better known as Bert Kaempfert...",
+    "question": "Manfred Moch was the featured solo trumpet player of the orchestra named after which German orchestra leader, music producer, and songwriter who died on June 21, 1980?",
+    "answer": "Bert Kaempfert",
+    "embedding_text": "Question: Manfred Moch was the featured solo trumpet player of the orchestra named after which German orchestra leader, music producer, and songwriter who died on June 21, 1980? Answer: Bert Kaempfert",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer accurately extracts the entity 'Bert Kaempfert' as the orchestra leader mentioned in the text."
+  },
+  {
+    "id": "halueval_001_fail",
+    "type": "fail_rule2_logic_twist",
+    "reference": " He made a name for himself in the 1960s as the featured solo trumpet player for the Bert Kaempfert orchestra... Berthold Heinrich Kämpfert... better known as Bert Kaempfert...",
+    "question": "Manfred Moch was the featured solo trumpet player of the orchestra named after which German orchestra leader, music producer, and songwriter who died on June 21, 1980?",
+    "answer": "Manfred Moch was not the featured solo trumpet player of any orchestra led by Bert Kaempfert.",
+    "embedding_text": "Question: Manfred Moch was the featured solo trumpet player of the orchestra named after which German orchestra leader, music producer, and songwriter who died on June 21, 1980? Answer: Manfred Moch was not the featured solo trumpet player of any orchestra led by Bert Kaempfert.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 2: Logic Twist). The reference explicitly states he 'made a name for himself... as the featured solo trumpet player'. The answer contradicts this by claiming he was 'not' the player. This is a direct negation of the textual evidence."
+  },
+  {
+    "id": "halueval_003_pass",
+    "type": "pass_fact_match",
+    "reference": "\"Cool Down\" is a song by Filipino-Australian singer-actor James Reid... rose to prominence in 2014 for his leading role in the film \"Diary ng Panget: The Movie\".",
+    "question": "What movie did the \"Cool Down\" singer rise to prominence with?",
+    "answer": "Diary ng Panget: The Movie",
+    "embedding_text": "Question: What movie did the \"Cool Down\" singer rise to prominence with? Answer: Diary ng Panget: The Movie",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer provides the exact title of the movie 'Diary ng Panget: The Movie' as specified in the reference."
+  },
+  {
+    "id": "halueval_003_fail",
+    "type": "fail_rule1_entity_mismatch",
+    "reference": "\"Cool Down\" is a song by Filipino-Australian singer-actor James Reid... rose to prominence in 2014 for his leading role in the film \"Diary ng Panget: The Movie\".",
+    "question": "What movie did the \"Cool Down\" singer rise to prominence with?",
+    "answer": "The \"Cool Down\" singer rose to prominence with \"Ang Diary ng Panget\"",
+    "embedding_text": "Question: What movie did the \"Cool Down\" singer rise to prominence with? Answer: The \"Cool Down\" singer rose to prominence with \"Ang Diary ng Panget\"",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Entity Mismatch). The reference specifies the title as \"Diary ng Panget: The Movie\". The answer uses \"Ang Diary ng Panget\", which is a different title/variation not present in the text. In strict fact verification, the exact entity name is required."
+  },
+  {
+    "id": "halueval_006_pass",
+    "type": "pass_fact_match",
+    "reference": "Adana is an Indian raga... brought into North Indian music by Miyan Tansen, the legendary 16th-century composer...",
+    "question": "Who brought the raga into Northern Indian music that is often sung or played in drut laya before a vilambit composition in raga Adana?",
+    "answer": "Miyan Tansen",
+    "embedding_text": "Question: Who brought the raga into Northern Indian music that is often sung or played in drut laya before a vilambit composition in raga Adana? Answer: Miyan Tansen",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer correctly identifies 'Miyan Tansen' as the person who brought the raga, consistent with the text."
+  },
+  {
+    "id": "halueval_006_fail",
+    "type": "fail_rule1_fabrication",
+    "reference": "Adana is an Indian raga... brought into North Indian music by Miyan Tansen, the legendary 16th-century composer...",
+    "question": "Who brought the raga into Northern Indian music that is often sung or played in drut laya before a vilambit composition in raga Adana?",
+    "answer": "Ravi Shankar",
+    "embedding_text": "Question: Who brought the raga into Northern Indian music that is often sung or played in drut laya before a vilambit composition in raga Adana? Answer: Ravi Shankar",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Fabrication). The reference explicitly attributes the action to 'Miyan Tansen'. The answer introduces 'Ravi Shankar', an entity completely absent from the provided text, constituting a factual fabrication."
+  },
+  {
+    "id": "halueval_004_pass",
+    "type": "pass_fact_match",
+    "reference": " Harlem is the birthplace of comedian Oliver Hardy...",
+    "question": "Where is the birthplace of \"Babe\" Hardy?",
+    "answer": "Harlem",
+    "embedding_text": "Question: Where is the birthplace of \"Babe\" Hardy? Answer: Harlem",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer directly extracts 'Harlem' as the birthplace mentioned in the reference."
+  },
+  {
+    "id": "halueval_004_fail",
+    "type": "fail_rule1_entity_mismatch",
+    "reference": " Harlem is the birthplace of comedian Oliver Hardy...",
+    "question": "Where is the birthplace of \"Babe\" Hardy?",
+    "answer": "\"Babe\" Hardy was born in New York.",
+    "embedding_text": "Question: Where is the birthplace of \"Babe\" Hardy? Answer: \"Babe\" Hardy was born in New York.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Entity Mismatch). The reference explicitly states 'Harlem' is the birthplace. The answer provides 'New York'. While geographically related, the text does not mention New York, and substituting the specific entity 'Harlem' with 'New York' is an unsupported entity replacement in this context."
+  },
+  {
+    "id": "halueval_010_pass",
+    "type": "pass_fact_match",
+    "reference": "Peytona is an unincorporated community within Shelby County... As of the 2010 census, the population was 42,074.",
+    "question": "The county in Kentucky containing Peytona had how many people in its population in the 2010 census?",
+    "answer": "42,074",
+    "embedding_text": "Question: The county in Kentucky containing Peytona had how many people in its population in the 2010 census? Answer: 42,074",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer cites the exact population figure '42,074' found in the reference."
+  },
+  {
+    "id": "halueval_010_fail",
+    "type": "fail_rule3_precision_loss",
+    "reference": "Peytona is an unincorporated community within Shelby County... As of the 2010 census, the population was 42,074.",
+    "question": "The county in Kentucky containing Peytona had how many people in its population in the 2010 census?",
+    "answer": "There were over 40,000 residents in the county that contains Peytona during the 2010 census.",
+    "embedding_text": "Question: The county in Kentucky containing Peytona had how many people in its population in the 2010 census? Answer: There were over 40,000 residents in the county that contains Peytona during the 2010 census.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 3: Scope/Degree Drift). The reference provides a precise census figure '42,074'. The answer generalizes this to 'over 40,000'. This loss of precision violates the requirement to faithfully reflect specific data points, constituting a 'Scope Drift' (generalization) error."
+  },
+  {
+    "id": "halueval_013_pass",
+    "type": "pass_fact_match",
+    "reference": " She provided silent film soundtrack accompaniment for such performers as Buster Keaton and Charlie Chaplin. Sir Charles Spencer \"Charlie\" Chaplin... was an English comic actor...",
+    "question": "Rosa Rio provided silent film soundtrack accompaniment for which English comic actor?",
+    "answer": "Charlie Chaplin",
+    "embedding_text": "Question: Rosa Rio provided silent film soundtrack accompaniment for which English comic actor? Answer: Charlie Chaplin",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer correctly identifies 'Charlie Chaplin', who satisfies the 'English comic actor' constraint in the reference."
+  },
+  {
+    "id": "halueval_013_fail",
+    "type": "fail_rule1_attribute_mismatch",
+    "reference": " She provided silent film soundtrack accompaniment for such performers as Buster Keaton and Charlie Chaplin. Sir Charles Spencer \"Charlie\" Chaplin... was an English comic actor...",
+    "question": "Rosa Rio provided silent film soundtrack accompaniment for which English comic actor?",
+    "answer": "Rosa Rio provided silent film soundtrack accompaniment for Buster Keaton.",
+    "embedding_text": "Question: Rosa Rio provided silent film soundtrack accompaniment for which English comic actor? Answer: Rosa Rio provided silent film soundtrack accompaniment for Buster Keaton.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Attribute Mismatch). The question specifically asks for the 'English' comic actor. The reference identifies 'Charlie Chaplin' as English, but does not attribute this nationality to 'Buster Keaton'. By selecting Keaton, the answer violates the specific attribute constraint defined in the prompt."
+  },
+  {
+    "id": "halueval_001_pass",
+    "type": "pass_fact_match",
+    "reference": "Jane Doe #1 and Jane Doe #2 vs United States of America is a civil action... allegations... against Alan Dershowitz and Prince Andrew... Prince Andrew... is the second son... of Queen Elizabeth II...",
+    "question": "Who is the mother of the prince that had allegations made against him related to the lawsuit \"Two Jane Does v US\"?",
+    "answer": "Prince Andrew's mother is Queen Elizabeth II.",
+    "embedding_text": "Question: Who is the mother of the prince that had allegations made against him related to the lawsuit \"Two Jane Does v US\"? Answer: Prince Andrew's mother is Queen Elizabeth II.",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer correctly identifies the mother (Queen Elizabeth II) of the specific prince (Prince Andrew) mentioned in the context of the lawsuit."
+  },
+  {
+    "id": "halueval_021_pass",
+    "type": "pass_fact_match",
+    "reference": "She is known for her roles... portrays Karen Page in... \"The Punisher\". It is set in the Marvel Cinematic Universe... and is a spin-off of \"Marvel's Daredevil\".",
+    "question": "Which television series did Deborah Ann Woll play in that was a spin-off of Marvel's Daredevil?",
+    "answer": "Deborah Ann Woll played in \"The Punisher\" series.",
+    "embedding_text": "Question: Which television series did Deborah Ann Woll play in that was a spin-off of Marvel's Daredevil? Answer: Deborah Ann Woll played in \"The Punisher\" series.",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer accurately identifies 'The Punisher' as the series satisfying the condition (spin-off of Daredevil) and correctly states the actress's involvement."
+  },
+  {
+    "id": "halueval_003_fail",
+    "type": "fail_rule1_numeric_distortion",
+    "reference": "Zov Tigra National Park... is a mountainous refuge for the endangered Amur Tiger. This was followed up by a more detailed census which revealed there was a total population of 562 wild Siberian tigers in Russia.",
+    "question": "What is the total population number for the endangered Amur Tiger who takes refuge in Zov Tigra National Park?",
+    "answer": "The total population number for the endangered Amur Tiger who takes refuge in Zov Tigra National Park is 162.",
+    "embedding_text": "Question: What is the total population number for the endangered Amur Tiger who takes refuge in Zov Tigra National Park? Answer: The total population number for the endangered Amur Tiger who takes refuge in Zov Tigra National Park is 162.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Numeric Distortion). The reference explicitly cites the census population as '562'. The answer alters this figure to '162', constituting a direct factual contradiction and numeric hallucination."
+  },
+  {
+    "id": "halueval_003_pass",
+    "type": "pass_fact_match",
+    "reference": "Zov Tigra National Park... census which revealed there was a total population of 562 wild Siberian tigers in Russia.",
+    "question": "What is the total population number for the endangered Amur Tiger who takes refuge in Zov Tigra National Park?",
+    "answer": "562",
+    "embedding_text": "Question: What is the total population number for the endangered Amur Tiger who takes refuge in Zov Tigra National Park? Answer: 562",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer extracts the exact numeric value '562' provided in the reference text."
+  },
+  {
+    "id": "halueval_007_fail",
+    "type": "fail_rule2_logic_twist",
+    "reference": "Vincenzo... Bellini... was an Italian opera composer... Igor... Stravinsky... was a Russian Empire-born composer, pianist, and conductor.",
+    "question": "Who has knowledge of more arts, Vincenzo Bellini or Igor Stravinsky",
+    "answer": "Vincenzo Bellini had more knowledge.",
+    "embedding_text": "Question: Who has knowledge of more arts, Vincenzo Bellini or Igor Stravinsky Answer: Vincenzo Bellini had more knowledge.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 2: Logic Twist). The reference lists one art form for Bellini (composer) and three for Stravinsky (composer, pianist, conductor). Logical comparison dictates Stravinsky has 'more' arts. The answer reverses this relationship."
+  },
+  {
+    "id": "halueval_007_pass",
+    "type": "pass_valid_inference",
+    "reference": "Vincenzo... Bellini... was an Italian opera composer... Igor... Stravinsky... was a Russian Empire-born composer, pianist, and conductor.",
+    "question": "Who has knowledge of more arts, Vincenzo Bellini or Igor Stravinsky",
+    "answer": "Igor Stravinsky",
+    "embedding_text": "Question: Who has knowledge of more arts, Vincenzo Bellini or Igor Stravinsky Answer: Igor Stravinsky",
+    "label": "PASS",
+    "reason": "PASS (Valid Inference). Based on the count of artistic roles listed in the text (Bellini: 1 vs Stravinsky: 3), the model correctly infers Stravinsky as the answer."
+  },
+  {
+    "id": "halueval_008_fail",
+    "type": "fail_rule1_entity_mismatch",
+    "reference": "Paladins... developed and published by Hi-Rez Studios. Hi-Rez Studios is an independent... developer based in Alpharetta, Georgia...",
+    "question": "who is the independent game developer from Alpharetta, Georgia?",
+    "answer": "The company that developed Paladins: Champions of the Realm.",
+    "embedding_text": "Question: who is the independent game developer from Alpharetta, Georgia? Answer: The company that developed Paladins: Champions of the Realm.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Entity Missing). The question asks for the specific name ('Who'). The answer provides a circular description ('The company that developed...') without naming the entity 'Hi-Rez Studios' explicitly mentioned in the text."
+  },
+  {
+    "id": "halueval_009_fail",
+    "type": "fail_rule1_fabrication",
+    "reference": "Martin... formed a rock band... in 1996... James Drescher (born December 10, 1960)... is the lead singer for... Murphy's Law.",
+    "question": "Which singer formed a band first, Chris Martin or Jimmy Gestapo?",
+    "answer": "Chris Martin formed a band first.",
+    "embedding_text": "Question: Which singer formed a band first, Chris Martin or Jimmy Gestapo? Answer: Chris Martin formed a band first.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Fabrication / Unverifiable). The reference states when Chris Martin formed a band (1996) but does not state when Jimmy Gestapo formed his band. Therefore, determining who was 'first' is impossible based solely on the provided text. The answer hallucinates a definitive comparison."
+  },
+    {
+    "id": "halueval_001_pass",
+    "type": "pass_fact_match",
+    "reference": "Kim Warwick (born 8 April 1952) is an Australian former professional male tennis player... Matt Lucena... is a former professional tennis player...",
+    "question": "Kim Warwick and Matt Lucena both play what sport?",
+    "answer": "Kim Warwick and Matt Lucena both played professional tennis.",
+    "embedding_text": "Question: Kim Warwick and Matt Lucena both play what sport? Answer: Kim Warwick and Matt Lucena both played professional tennis.",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer correctly identifies the sport (tennis) for both individuals as supported by the text."
+  },
+  {
+    "id": "halueval_004_fail",
+    "type": "fail_rule3_precision_loss",
+    "reference": "He made his debut... at Cazaly's Stadium... Cazaly's Stadium is a sports stadium located in Westcourt, a suburb of Cairns, Australia.",
+    "question": "Jack Scrimshaw debuted at the match held at what stadium in Westcourt, Cairns?",
+    "answer": "Jack Scrimshaw debuted at a Cairns stadium.",
+    "embedding_text": "Question: Jack Scrimshaw debuted at the match held at what stadium in Westcourt, Cairns? Answer: Jack Scrimshaw debuted at a Cairns stadium.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 3: Scope/Degree Drift). The question asks for the specific stadium name. The text provides 'Cazaly's Stadium'. The answer generalizes this to 'a Cairns stadium', losing the required precision."
+  },
+  {
+    "id": "halueval_004_pass",
+    "type": "pass_fact_match",
+    "reference": "He made his debut... at Cazaly's Stadium... Cazaly's Stadium is a sports stadium located in Westcourt, a suburb of Cairns, Australia.",
+    "question": "Jack Scrimshaw debuted at the match held at what stadium in Westcourt, Cairns?",
+    "answer": "Cazaly's Stadium",
+    "embedding_text": "Question: Jack Scrimshaw debuted at the match held at what stadium in Westcourt, Cairns? Answer: Cazaly's Stadium",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer accurately extracts the specific entity 'Cazaly's Stadium' from the text."
+  },
+  {
+    "id": "halueval_005_fail",
+    "type": "fail_rule1_entity_missing",
+    "reference": "Pres and Sweets is an album by... Harry Edison... member of the Count Basie Orchestra.",
+    "question": "Pres and Sweets is an album by saxophonist Lester Young and a trumpeter that is a member of what orchestra?",
+    "answer": "The Pres and Sweets album features a trumpeter who later played with a jazz orchestra.",
+    "embedding_text": "Question: Pres and Sweets is an album by saxophonist Lester Young and a trumpeter that is a member of what orchestra? Answer: The Pres and Sweets album features a trumpeter who later played with a jazz orchestra.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Entity Missing). The question asks for the name of the orchestra. The text explicitly names 'Count Basie Orchestra'. The answer provides a vague description ('a jazz orchestra') without naming the specific entity."
+  },
+  {
+    "id": "halueval_006_fail",
+    "type": "fail_rule1_fabrication",
+    "reference": "Thirsty Fish... consists of the rappers Dumbfoundead... Jonathan Park... known professionally as Dumbfoundead...",
+    "question": "What is the nickname of the American rapper of Korean descent who is in the trio of Thirsty Fish?",
+    "answer": "The Korean Warrior",
+    "embedding_text": "Question: What is the nickname of the American rapper of Korean descent who is in the trio of Thirsty Fish? Answer: The Korean Warrior",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Fabrication). The text states the rapper's nickname/stage name is 'Dumbfoundead'. The answer invents a new name 'The Korean Warrior' which does not appear in the text."
+  },
+  {
+    "id": "halueval_008_fail",
+    "type": "fail_rule2_logic_twist",
+    "reference": "Costus... widespread through tropical... Americas. Boenninghausenia... occurs in Bhutan, Nepal... (Asia only).",
+    "question": "Are Costus and Boenninghausenia plants both found in the Americas?",
+    "answer": "Yes, Costus is commonly found in the Americas.",
+    "embedding_text": "Question: Are Costus and Boenninghausenia plants both found in the Americas? Answer: Yes, Costus is commonly found in the Americas.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 2: Logic Twist). The question asks if *both* are found in the Americas. Since Boenninghausenia is not, the correct logical answer is 'No'. The answer 'Yes...' is misleading and logically incorrect regarding the conjunction 'both'."
+  },
+  {
+    "id": "halueval_010_fail",
+    "type": "fail_rule1_entity_missing",
+    "reference": "Miloš Forman... Czech... Alex Cox... British...",
+    "question": "What film director is from Great Britain, Miloš Forman or Alex Cox?",
+    "answer": "Miloš Forman is not from Great Britain.",
+    "embedding_text": "Question: What film director is from Great Britain, Miloš Forman or Alex Cox? Answer: Miloš Forman is not from Great Britain.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Entity Missing / Evasion). The question asks to identify the director who *is* from Great Britain (Alex Cox). The answer evades the specific request by stating who is *not*, failing to provide the requested entity."
+  },
+    {
+    "id": "halueval_sel_001_pass",
+    "type": "pass_fact_match",
+    "reference": "Holger-Madsen... was a Danish film director... Anthony... Scott... was an English film director...",
+    "question": "What do Holger-Madsen and Tony Scott have in common?",
+    "answer": "They were both film directors.",
+    "embedding_text": "Question: What do Holger-Madsen and Tony Scott have in common? Answer: They were both film directors.",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer correctly identifies the specific shared profession 'film director' mentioned in the text."
+  },
+  {
+    "id": "halueval_sel_001_fail",
+    "type": "fail_rule3_scope_drift",
+    "reference": "Holger-Madsen... was a Danish film director... Anthony... Scott... was an English film director...",
+    "question": "What do Holger-Madsen and Tony Scott have in common?",
+    "answer": "Both were involved in the film industry.",
+    "embedding_text": "Question: What do Holger-Madsen and Tony Scott have in common? Answer: Both were involved in the film industry.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 3: Scope Drift / Over-Generalization). The text specifies they were 'film directors'. The answer generalizes this to 'involved in the film industry'. While technically true, in strict fact-checking, replacing a specific role with a broad category is considered a loss of precision."
+  },
+  {
+    "id": "halueval_sel_003_pass",
+    "type": "pass_fact_match",
+    "reference": "The dinosaur \"Riojasaurus\" is named after the province [La Rioja]...",
+    "question": "Which dinosaur was named after the province where Bartolome Saravi was General Minister in 1847?",
+    "answer": "Riojasaurus",
+    "embedding_text": "Question: Which dinosaur was named after the province where Bartolome Saravi was General Minister in 1847? Answer: Riojasaurus",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer accurately extracts the entity 'Riojasaurus' as stated in the text."
+  },
+  {
+    "id": "halueval_sel_003_fail",
+    "type": "fail_rule1_fabrication",
+    "reference": "The dinosaur \"Riojasaurus\" is named after the province [La Rioja]...",
+    "question": "Which dinosaur was named after the province where Bartolome Saravi was General Minister in 1847?",
+    "answer": "Saravisaurus",
+    "embedding_text": "Question: Which dinosaur was named after the province where Bartolome Saravi was General Minister in 1847? Answer: Saravisaurus",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Fabrication). The text names the dinosaur 'Riojasaurus'. The answer invents a name 'Saravisaurus' (likely conflating the person's name 'Saravi' with the dinosaur), which is a clear hallucination."
+  },
+  {
+    "id": "halueval_sel_005_pass",
+    "type": "pass_fact_match",
+    "reference": "Paul Hamilton Williams, Jr.... is an American composer...",
+    "question": "Rainbow Connection was written by the composer of what nationality?",
+    "answer": "American",
+    "embedding_text": "Question: Rainbow Connection was written by the composer of what nationality? Answer: American",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer correctly identifies the nationality 'American' from the text."
+  },
+  {
+    "id": "halueval_sel_005_fail",
+    "type": "fail_rule1_evasion",
+    "reference": "Paul Hamilton Williams, Jr.... is an American composer...",
+    "question": "Rainbow Connection was written by the composer of what nationality?",
+    "answer": "The composer of Rainbow Connection was not of British nationality.",
+    "embedding_text": "Question: Rainbow Connection was written by the composer of what nationality? Answer: The composer of Rainbow Connection was not of British nationality.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Entity Missing / Evasion). The question asks for the specific nationality. The answer provides a negative statement ('not British') instead of the required positive fact ('American'), failing to answer the user's query."
+  },
+  {
+    "id": "halueval_sel_006_pass",
+    "type": "pass_fact_match",
+    "reference": "Click is a 2006... film... produced by Adam Sandler, who also starred in the lead role.",
+    "question": "What American actor starred in the 2006 movie Click?",
+    "answer": "Adam Sandler",
+    "embedding_text": "Question: What American actor starred in the 2006 movie Click? Answer: Adam Sandler",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer correctly identifies 'Adam Sandler' as the lead actor mentioned in the text."
+  },
+  {
+    "id": "halueval_sel_006_fail",
+    "type": "fail_rule1_entity_mismatch",
+    "reference": "Click is a 2006... film... produced by Adam Sandler, who also starred in the lead role. Adam Richard Sandler...",
+    "question": "What American actor starred in the 2006 movie Click?",
+    "answer": "The lead role actor's name is Richard.",
+    "embedding_text": "Question: What American actor starred in the 2006 movie Click? Answer: The lead role actor's name is Richard.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Entity Mismatch). The actor's primary name is 'Adam Sandler'. 'Richard' is his middle name. Referring to him solely as 'Richard' in this context is an incorrect entity reference and misleading."
+  },
+  {
+    "id": "halueval_sel_010_pass",
+    "type": "pass_fact_match",
+    "reference": "Prandtl number... named after... Ludwig Prandtl... pioneer in... aerodynamics, which have come to form the basis of the applied science of aeronautical engineering.",
+    "question": "Prandtl numbers are named after a pioneer in what applied science?",
+    "answer": "aeronautical engineering",
+    "embedding_text": "Question: Prandtl numbers are named after a pioneer in what applied science? Answer: aeronautical engineering",
+    "label": "PASS",
+    "reason": "PASS (Fact Match). The answer accurately extracts 'aeronautical engineering' as the applied science mentioned."
+  },
+  {
+    "id": "halueval_sel_010_fail",
+    "type": "fail_rule1_attribute_mismatch",
+    "reference": "Prandtl number... named after... Ludwig Prandtl... pioneer in... aerodynamics, which have come to form the basis of the applied science of aeronautical engineering.",
+    "question": "Prandtl numbers are named after a pioneer in what applied science?",
+    "answer": "Prandtl numbers are named after a pioneer in the development of systematic mathematical analyses.",
+    "embedding_text": "Question: Prandtl numbers are named after a pioneer in what applied science? Answer: Prandtl numbers are named after a pioneer in the development of systematic mathematical analyses.",
+    "label": "FAIL",
+    "reason": "FAIL (Rule 1: Attribute Mismatch). The question asks for the 'applied science'. The answer provides the *method* ('systematic mathematical analyses') used by the pioneer, rather than the field itself ('aeronautical engineering'), constituting an attribute mismatch."
+  }
+]
