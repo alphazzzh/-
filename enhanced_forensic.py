@@ -4,6 +4,7 @@ import re
 import hashlib
 import pickle
 import asyncio
+import httpx
 from typing import TypedDict, Optional, Dict, Any, Tuple, List
 from pathlib import Path
 
@@ -89,7 +90,8 @@ torch.__version__ = "2.6.0"
 
 # 3. Transformers 路径拦截
 from transformers import AutoConfig, AutoModelForSequenceClassification, AutoTokenizer
-from config import AppConfig, LOCAL_SAFE_PATH
+
+LOCAL_SAFE_PATH = '/home/zzh/hallucination/minicheck_largemodel'
 
 orig_config_load = AutoConfig.from_pretrained
 orig_model_load = AutoModelForSequenceClassification.from_pretrained
@@ -163,6 +165,39 @@ except ImportError:
 # ================= 1. 配置 (Configuration) =================
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
 logger = logging.getLogger(__name__)
+
+
+class AppConfig:
+    API_BASE = "http://127.0.0.1:8000/v1"
+    API_KEY = "sk-placeholder"
+    MODEL_NAME = "Qwen2.5-14B"
+    TEMPERATURE = 0.0
+
+    STRICT_REFUSAL_CHECK = True
+    REFUSAL_SCAN_CHARS = 600
+
+    MINICHECK_ENABLED = True
+    MINICHECK_MODEL_NAME = 'Bespoke-MiniCheck-7B'
+    MINICHECK_ENABLE_PREFIX_CACHING = False
+    
+    # ============= 新增:离线验证器配置 =============
+    BLOOM_FILTER_PATH = "/home/zzh/hallucination/bloom/wiki_titles_zh.bloom"
+    ENABLE_BLOOM_FILTER = True
+    ENABLE_SPACY_NER = True
+    ENABLE_ISBN_CHECK = True
+    ENABLE_GIBBERISH_CHECK = False
+
+    # ============= Dynamic Few-Shot 配置 =============
+    FEW_SHOT_EXAMPLES_PATH = "/home/zzh/hallucination/forrag/rag.json" 
+    
+    # 【修改点 1】: 这里填你本地 bge-m3 的文件夹绝对路径
+    # 文件夹里应该包含: model.onnx, tokenizer.json, vocab.txt 等
+    EMBEDDING_MODEL_PATH = "/model/bge-m3/onnx/" 
+    
+    # 【修改点 2】: 开启 ONNX 模式开关
+    EMBEDDING_USE_ONNX = True 
+    
+    ENABLE_DYNAMIC_FEW_SHOT = True
 
 
 llm = None
@@ -1669,30 +1704,70 @@ app = workflow.compile()
 
 # ================= API Wrapper =================
 
+_ASYNC_CLIENT = None
+
+def _get_global_client():
+    """获取全局共享的 HTTP Client (单例模式)"""
+    global _ASYNC_CLIENT
+    if _ASYNC_CLIENT is None or _ASYNC_CLIENT.is_closed:
+        # 优化连接池配置: 
+        # 1. max_keepalive_connections: 保持的长连接数，避免"秒断"
+        # 2. max_connections: 最大并发数
+        # 3. timeout: 适当放宽连接超时
+        limits = httpx.Limits(max_keepalive_connections=20, max_connections=100)
+        timeout = httpx.Timeout(120.0, connect=10.0)
+        
+        _ASYNC_CLIENT = httpx.AsyncClient(limits=limits, timeout=timeout)
+        logger.info("✅ Global HTTP Client (Async) initialized with connection pooling.")
+        
+    return _ASYNC_CLIENT
+
+
 class RemoteHTTPGen:
     def __init__(self, host, model_name, timeout=120.0, api_key=None):
         global llm
+        
         base_url = f"http://{host}/v1" if not host.startswith("http") else f"{host}/v1"
+        
+        # 避免重复初始化 (如果配置没变)
+        if llm is not None:
+            # 简单的属性检查，防止重复创建销毁连接池
+            try:
+                if (llm.model_name == model_name and 
+                    llm.openai_api_base == base_url):
+                    return
+            except AttributeError:
+                pass
+
         AppConfig.API_BASE = base_url
         AppConfig.MODEL_NAME = model_name
+        
+        # 使用共享 Client
+        shared_client = _get_global_client()
+        
         llm = ChatOpenAI(
             base_url=base_url,
             api_key=api_key or "sk-x",
             model=model_name,
             temperature=AppConfig.TEMPERATURE,
             timeout=timeout,
+            http_async_client=shared_client, # 【关键修复】注入共享客户端
+            max_retries=1 # 减少重试，依赖 Client 自身的稳定性
         )
+        logger.info(f"LLM Client Refreshed: {model_name} @ {base_url}")
 
 
 def run_fast_validation(gen, question: str, raw_answer: str, **kwargs) -> Dict[str, Any]:
     """主入口函数:运行完整的验证流程"""
     global llm
     if llm is None:
+        shared_client = _get_global_client()
         llm = ChatOpenAI(
             base_url=AppConfig.API_BASE,
             api_key=AppConfig.API_KEY or "sk-x",
             model=AppConfig.MODEL_NAME,
             temperature=AppConfig.TEMPERATURE,
+            http_async_client=shared_client, # 【关键修复】
         )
 
     # Step 1: refusal 检测/清洗
