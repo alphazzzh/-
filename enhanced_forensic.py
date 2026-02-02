@@ -193,37 +193,50 @@ class DynamicFewShotSelector:
         # ============================================
         
         with open(examples_path, 'r', encoding='utf-8') as f:
-            self.examples = json.load(f)
+            all_examples = json.load(f)
             
-        logger.info(f"正在为 {len(self.examples)} 条判例构建索引...")
+        logger.info(f"正在为 {len(all_examples)} 条判例构建分层索引...")
         
-        # 1. 构建语料库
-        self.corpus = []
-        for ex in self.examples:
-            # 适配你的 json 字段
+        # 分组构建
+        self.long_examples = []
+        self.short_examples = []
+        long_corpus = []
+        short_corpus = []
+
+        for ex in all_examples:
+            # 默认归为 short，除非明确标记为 long
+            len_tag = ex.get("length", "short")
+            
             ref = ex.get("reference", "")
             q = ex.get("question", "")
             ans = ex.get("answer", "")
-            # 拼接 Ref+Q+A 以获得最佳检索效果
             text_to_embed = f"Ref: {ref}\nQuestion: {q}\nAnswer: {ans}"
-            self.corpus.append(text_to_embed)
             
-        # 2. 计算向量 (encode 接口已统一)
-        # 注意：SentenceTransformer 默认返回 Tensor 或 numpy，ONNX 返回 numpy
-        self.embeddings = self.model.encode(self.corpus)
+            if len_tag == "long":
+                self.long_examples.append(ex)
+                long_corpus.append(text_to_embed)
+            else:
+                self.short_examples.append(ex)
+                short_corpus.append(text_to_embed)
+
+        # 辅助函数: 构建索引
+        def build_index(corpus):
+            if not corpus:
+                return None
+            embs = self.model.encode(corpus)
+            if hasattr(embs, "detach"):
+                embs = embs.detach().cpu().numpy()
+            # 归一化
+            norm = np.linalg.norm(embs, axis=1, keepdims=True)
+            return embs / (norm + 1e-9)
+
+        self.long_embeddings = build_index(long_corpus)
+        self.short_embeddings = build_index(short_corpus)
         
-        # 确保转为 numpy 且归一化 (防止 SentenceTransformer 未归一化)
-        if hasattr(self.embeddings, "detach"): # 如果是 Tensor
-             self.embeddings = self.embeddings.detach().cpu().numpy()
-             
-        # 再次强制归一化 (双重保险)
-        norm = np.linalg.norm(self.embeddings, axis=1, keepdims=True)
-        self.embeddings = self.embeddings / (norm + 1e-9)
-        
-        logger.info("判例库索引构建完成！")
+        logger.info(f"索引构建完成: Long={len(self.long_examples)}, Short={len(self.short_examples)}")
 
     def retrieve(self, current_ref, current_q, current_ans, k=2):
-        """检索最相似的 k 个例子"""
+        """检索最相似的 k 个例子 (根据 Reference 长度分流)"""
         query = f"Ref: {current_ref}\nQuestion: {current_q}\nAnswer: {current_ans}"
         
         # 向量化查询
@@ -236,11 +249,27 @@ class DynamicFewShotSelector:
         # 归一化
         query_vec = query_vec / (np.linalg.norm(query_vec, axis=1, keepdims=True) + 1e-9)
         
+        # === 核心修改: 根据原文长度选择库 ===
+        ref_len = len(str(current_ref)) if current_ref else 0
+        
+        if ref_len > 140:
+            candidates = self.long_examples
+            embeddings = self.long_embeddings
+            tag = "LONG"
+        else:
+            candidates = self.short_examples
+            embeddings = self.short_embeddings
+            tag = "SHORT"
+            
+        if not candidates or embeddings is None:
+            logger.warning(f"Few-Shot bucket '{tag}' is empty, skipping injection.")
+            return []
+        
         # 计算相似度
-        scores = np.dot(query_vec, self.embeddings.T)[0]
+        scores = np.dot(query_vec, embeddings.T)[0]
         top_indices = np.argsort(scores)[::-1][:k]
         
-        return [self.examples[i] for i in top_indices]
+        return [candidates[i] for i in top_indices]
 
 # 修改加载函数，传入新的 PATH 配置
 def _ensure_selector_loaded():
